@@ -1,0 +1,15 @@
+server:
+  applicationConnectors:
+    - type: http
+      port: 8086
+  adminConnectors:
+    - type: http
+      port: 8089
+mongoDBConnection:
+  credentials:
+    username: "danielsan"
+    password: "danielsan"
+  seeds:
+    - host: "localhost"
+      port: 27017
+  database: "dw_kudo"
