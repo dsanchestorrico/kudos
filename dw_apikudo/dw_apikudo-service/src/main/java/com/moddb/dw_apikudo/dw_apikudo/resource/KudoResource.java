@@ -7,10 +7,13 @@ package com.moddb.dw_apikudo.dw_apikudo.resource;
 
 import com.moddb.dw_apikudo.dw_apikudo.model.Kudo;
 import com.moddb.dw_apikudo.dw_apikudo.model.KudoDAO;
+import com.moddb.dw_apikudo.dw_apikudo.model.Suscriber;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -41,9 +44,11 @@ public class KudoResource {
     }
 
     @GET
-    public Response all() {
+    public Response all() throws IOException, TimeoutException {
         LOGGER.info("List all kudos.");
         final List<Kudo> kudosFind = kudoDAO.getAll();
+        Suscriber suscriber = new Suscriber(kudoDAO);
+        suscriber.suscribe();
         return Response.ok(kudosFind).build();
     }
 

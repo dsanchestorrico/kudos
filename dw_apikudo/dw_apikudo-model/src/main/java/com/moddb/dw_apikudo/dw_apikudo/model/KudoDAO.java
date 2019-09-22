@@ -5,11 +5,14 @@
  */
 package com.moddb.dw_apikudo.dw_apikudo.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -25,7 +28,7 @@ public class KudoDAO {
         this.kudosCollection = kudosCollection1;
     }
 
-    public List<Kudo> getAll() {
+    public List<Kudo> getAll() throws IOException, TimeoutException {
         final MongoCursor<Document> kudos = kudosCollection.find().iterator();
         final List<Kudo> kudosFind = new ArrayList<>();
         try {
@@ -36,6 +39,10 @@ public class KudoDAO {
         } finally {
             kudos.close();
         }
+        Publisher publisher = new Publisher();
+        ObjectMapper om  = new ObjectMapper();
+        publisher.publishMessage(om.valueToTree(kudosFind).toString());
+        
         return kudosFind;
     }
 
@@ -53,6 +60,10 @@ public class KudoDAO {
 
     public void delete(final ObjectId id) {
         kudosCollection.deleteOne(new Document("_id", id));
+    }
+    
+    public void deleteByUser(final Integer id) {
+        kudosCollection.deleteMany(new Document("fuente", id));
     }
 
 }
