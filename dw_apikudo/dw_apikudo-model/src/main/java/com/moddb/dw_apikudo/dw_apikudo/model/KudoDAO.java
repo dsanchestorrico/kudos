@@ -39,9 +39,6 @@ public class KudoDAO {
         } finally {
             kudos.close();
         }
-        Publisher publisher = new Publisher();
-        ObjectMapper om  = new ObjectMapper();
-        publisher.publishMessage(om.valueToTree(kudosFind).toString());
         
         return kudosFind;
     }

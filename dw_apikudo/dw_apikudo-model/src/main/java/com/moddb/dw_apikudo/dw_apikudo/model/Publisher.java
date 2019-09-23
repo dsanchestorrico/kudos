@@ -25,8 +25,8 @@ public class Publisher {
     }
     
 
-    public void publishMessage(String message) throws IOException, TimeoutException {
-        String QUEUE_NAME = "hello";
+    public void publishAddKudoQTY(String idUsuario) throws IOException, TimeoutException {
+        String QUEUE_NAME = "ADD_KUDO_QTY";
 
         JSONObject jsonObject = new JSONObject();
         ConnectionFactory factory = new ConnectionFactory();
@@ -34,11 +34,9 @@ public class Publisher {
         try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
-            for (int i = 0; i < 10; i++) {
-//                String message = "Hello World! " + i;
-                channel.basicPublish("", QUEUE_NAME, null, message.getBytes("UTF-8"));
-                System.out.println(" [x] Sent '" + message + "'");
-            }
+                channel.basicPublish("", QUEUE_NAME, null, idUsuario.getBytes("UTF-8"));
+                System.out.println(" [x] Sent '" + idUsuario + "'");
+            
         }
     }
 }

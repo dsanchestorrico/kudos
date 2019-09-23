@@ -7,6 +7,7 @@ package com.moddb.dw_apikudo.dw_apikudo.resource;
 
 import com.moddb.dw_apikudo.dw_apikudo.model.Kudo;
 import com.moddb.dw_apikudo.dw_apikudo.model.KudoDAO;
+import com.moddb.dw_apikudo.dw_apikudo.model.Publisher;
 import com.moddb.dw_apikudo.dw_apikudo.model.Suscriber;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -55,9 +56,11 @@ public class KudoResource {
     @POST
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response save(final Kudo kudo) {
+    public Response save(final Kudo kudo) throws IOException, TimeoutException {
         LOGGER.info("Persist a kudo in collection with the information: {}", kudo);
         kudoDAO.save(kudo);
+        Publisher publisher = new Publisher();
+        publisher.publishAddKudoQTY(kudo.getDestino().toString());
         return Response.status(Response.Status.CREATED).build();
     }
 
